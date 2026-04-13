@@ -1,0 +1,31 @@
+import random
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+
+TOKEN ="8238258558:AAG_a8PHGTJNM5ajmfpL_Nn9UGf2gzmNO60"
+
+pairs = ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD"]
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("🤖 البوت خدام! اكتب /signal 🔥")
+
+async def signal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    pair = random.choice(pairs)
+    direction = random.choice(["CALL ⬆️", "PUT ⬇️"])
+    
+    msg = f"""📊 إشارة
+
+💱 {pair}
+📈 {direction}
+⏱️ 5 دقائق
+
+🔥 بالتوفيق"""
+    
+    await update.message.reply_text(msg)
+
+app = ApplicationBuilder().token(TOKEN).build()
+
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("signal", signal))
+
+app.run_polling()
